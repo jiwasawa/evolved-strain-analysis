@@ -52,19 +52,50 @@ def create_dendrogram(df_pca, plot_figure=False):
         plt.axis('off')
         #plt.savefig('FigS4_A.pdf', dpi=400, bbox_inches='tight')
         plt.show()
-    return hierarchy2
+    return strain_h, hierarchy2
+
+def plot_resistance(resistance_data, strain_h):
+    # hierarchical clustering of stresses
+    custom_cmap = sns.diverging_palette(252,18,s=99,l=52,sep=10,center='light',as_cmap=True)
+
+    # sorting of strains based on the hierarchical clustering in the supervised PCA space
+    stress_order = list(np.load('./data/stress_list_MAGE_order.npy')) # order of stresses based on mutant strain analysis
+    cl_resistance = resistance_data.reindex(strain_h).T
+    cl_resistance = cl_resistance.reindex(stress_order)
+
+    fig = plt.figure(figsize=(40,14))
+    ax = plt.axes()
+    mic_map = ax.imshow(cl_resistance, aspect=1.36, cmap=custom_cmap, clim=(-3,3))
+    cb = fig.colorbar(mic_map, extend='both', orientation='horizontal',ticks=[-3,3],aspect=3,
+                    shrink=0.04,use_gridspec=False,anchor=(0.855,1.45))
+    cb.ax.set_xticklabels(cb.ax.get_xticklabels(), fontsize=25)
+
+    for j,stress_ in enumerate(stress_order):
+        plt.text(-0.005, (len(stress_order)-j-0.8)/len(stress_order), s=stress_,fontsize=13,
+                color ='black', transform=ax.transAxes, horizontalalignment='right', weight='normal')
+    plt.xlim(-0.5,191.6)
+    plt.axis('off')
+    for j,strain_ in enumerate(strain_h):
+            plt.text((j+0.15)/len(strain_h), -0.005, s=strain_, fontsize=10,
+                    color ='black', transform=ax.transAxes,verticalalignment='top',rotation=90,
+                    weight='normal')
+    #plt.savefig('FigS4_C.pdf', dpi=400, bbox_inches='tight')
+    plt.show()
+
 
 expression = pd.read_excel('/PATH_TO_TABLE_S3/Table S3. Transcriptome data of evolved strains.xls', \
     index_col=0, skiprows=1)
-resistance_data = pd.read_csv('./resistance_norm.csv', index_col=0) # normalized IC50 values
-
+resistance_data = pd.read_csv('./data/resistance_norm.csv', index_col=0) # normalized IC50 values
 
 #supervised_expression = compute_feature_importance(expression, resistance_data)
-supervised_expression = pd.read_pickle('./supervised_expression.pkl')
+supervised_expression = pd.read_pickle('./data/supervised_expression.pkl')
 supervised_expression = supervised_expression.iloc[:,:213] # threshold for the genes
 
+# perform supervised PCA
 pca = PCA(n_components=36, svd_solver='full')
 df_pca = pca.fit_transform(supervised_expression)
 df_pca = pd.DataFrame(df_pca,index=supervised_expression.index)
 
-hiearchy2 = create_dendrogram(df_pca)
+strain_h, hiearchy2 = create_dendrogram(df_pca)
+
+plot_resistance(resistance_data, strain_h)
