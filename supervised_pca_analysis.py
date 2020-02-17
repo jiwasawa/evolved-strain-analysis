@@ -10,18 +10,22 @@ from scipy.cluster import hierarchy
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster, set_link_color_palette
 from scipy.spatial.distance import pdist
 
-def compute_feature_importance(expression, resistance_data):
+def compute_feature_importance(expression, resistance_data, run_RF=False):
     """Predict resistance profiles from expression profiles and 
-    raise important genes for the Random Forest regression."""
-    X = expression.T.iloc[:-4, :] # exclude the parent strains from the feature matrix X
-    y = resistance_data.reindex(X.index)
+    raise important genes for the Random Forest regression.
+    When run_RF=False, the already filtered expression data is used."""
+    if run_RF:
+        X = expression.T.iloc[:-4, :] # exclude the parent strains from the feature matrix X
+        y = resistance_data.reindex(X.index)
 
-    # Random Forest regression using hyperparameters defined by grid search
-    RF_reg = RandomForestRegressor(n_estimators=300, max_depth=18, random_state=42) 
-    RF_reg.fit(X, y)
+        # Random Forest regression using hyperparameters defined by grid search
+        RF_reg = RandomForestRegressor(n_estimators=300, max_depth=18, random_state=42) 
+        RF_reg.fit(X, y)
 
-    df = expression.iloc[np.argsort(RF_reg.feature_importances_)[::-1],:].T # sort genes based on its importance 
-    df.to_pickle('./supervised_expression.pkl')
+        df = expression.iloc[np.argsort(RF_reg.feature_importances_)[::-1],:].T # sort genes based on its importance 
+        df.to_pickle('./filtered_expression.pkl')
+    else:
+        df = pd.read_pickle('./data/filtered_expression.pkl')
     return df 
 
 def create_dendrogram(df_pca, plot_figure=False):
@@ -83,17 +87,16 @@ def plot_resistance(resistance_data, strain_h):
     plt.show()
 
 
-#expression = pd.read_excel('/PATH_TO_TABLE_S3/Table S3. Transcriptome data of evolved strains.xls', index_col=0, skiprows=1)
+expression = pd.read_excel('/PATH_TO_TABLE_S3/Table S3. Transcriptome data of evolved strains.xls', index_col=0, skiprows=1)
 resistance_data = pd.read_csv('./data/resistance_norm.csv', index_col=0) # normalized IC50 values
 
-#supervised_expression = compute_feature_importance(expression, resistance_data)
-supervised_expression = pd.read_pickle('./data/supervised_expression.pkl')
-supervised_expression = supervised_expression.iloc[:,:213] # threshold for the genes
+filtered_expression = compute_feature_importance(expression, resistance_data)
+filtered_expression = filtered_expression.iloc[:,:213] # threshold for the genes
 
 # perform supervised PCA
 pca = PCA(n_components=36, svd_solver='full')
-df_pca = pca.fit_transform(supervised_expression)
-df_pca = pd.DataFrame(df_pca,index=supervised_expression.index)
+df_pca = pca.fit_transform(filtered_expression)
+df_pca = pd.DataFrame(df_pca,index=filtered_expression.index)
 
 strain_h, hiearchy2 = create_dendrogram(df_pca)
 
