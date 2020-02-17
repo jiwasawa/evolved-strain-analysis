@@ -87,7 +87,7 @@ def plot_resistance(resistance_data, strain_h):
     plt.show()
 
 
-expression = pd.read_excel('/PATH_TO_TABLE_S3/Table S3. Transcriptome data of evolved strains.xls', index_col=0, skiprows=1)
+expression = pd.read_excel('/PATH_TO_TABLE_S3/Table S3. Transcriptome data of evolved strains.xlsx', index_col=0, skiprows=1)
 resistance_data = pd.read_csv('./data/resistance_norm.csv', index_col=0) # normalized IC50 values
 
 filtered_expression = compute_feature_importance(expression, resistance_data)
