@@ -55,7 +55,7 @@ def create_dendrogram(df_pca, plot_figure=False):
                             transform=ax.transAxes,verticalalignment='top',rotation=90,
                             weight='normal')
         plt.axis('off')
-        #plt.savefig('FigS4_A.pdf', dpi=400, bbox_inches='tight')
+        #plt.savefig('FigS3_A.pdf', dpi=400, bbox_inches='tight')
         plt.show()
     return strain_h, hierarchy2
 
@@ -84,7 +84,7 @@ def plot_resistance(resistance_data, strain_h):
             plt.text((j+0.15)/len(strain_h), -0.005, s=strain_, fontsize=10,
                     color ='black', transform=ax.transAxes,verticalalignment='top',rotation=90,
                     weight='normal')
-    #plt.savefig('FigS4_C.pdf', dpi=400, bbox_inches='tight')
+    #plt.savefig('Fig3_C.pdf', dpi=400, bbox_inches='tight')
     plt.show()
 
 resistance_data = pd.read_csv('./data/resistance_norm.csv', index_col=0) # normalized IC50 values
@@ -99,5 +99,5 @@ df_pca = pd.DataFrame(df_pca,index=filtered_expression.index)
 strain_h, hiearchy2 = create_dendrogram(df_pca)
 
 plot_resistance(resistance_data, strain_h)
-# It should be noted that the appearance of the plot slightly differs from Fig.S4(C).
+# It should be noted that the appearance of the plot slightly differs from Fig.S3(C).
 # This is because we use the normalized resistance profiles here for plotting.
