@@ -10,11 +10,12 @@ from scipy.cluster import hierarchy
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster, set_link_color_palette
 from scipy.spatial.distance import pdist
 
-def compute_feature_importance(expression, resistance_data, run_RF=False):
+def compute_feature_importance(resistance_data, run_RF=False):
     """Predict resistance profiles from expression profiles and 
     raise important genes for the Random Forest regression.
     When run_RF=False, the already filtered expression data is used."""
     if run_RF:
+        expression = pd.read_excel('./PATH_TO_TABLES3/Table S3. Transcriptome data of evolved strains.xlsx', index_col=0, skiprows=1)
         X = expression.T.iloc[:-4, :] # exclude the parent strains from the feature matrix X
         y = resistance_data.reindex(X.index)
 
@@ -86,10 +87,9 @@ def plot_resistance(resistance_data, strain_h):
     #plt.savefig('FigS4_C.pdf', dpi=400, bbox_inches='tight')
     plt.show()
 
-expression = pd.read_excel('./PATH_TO_TABLES3/Table S3. Transcriptome data of evolved strains.xlsx', index_col=0, skiprows=1)
 resistance_data = pd.read_csv('./data/resistance_norm.csv', index_col=0) # normalized IC50 values
 
-filtered_expression = compute_feature_importance(expression, resistance_data)
+filtered_expression = compute_feature_importance(resistance_data)
 
 # perform supervised PCA
 pca = PCA(n_components=36, svd_solver='full')
@@ -99,3 +99,5 @@ df_pca = pd.DataFrame(df_pca,index=filtered_expression.index)
 strain_h, hiearchy2 = create_dendrogram(df_pca)
 
 plot_resistance(resistance_data, strain_h)
+# It should be noted that the appearance of the plot slightly differs from Fig.S4(C).
+# This is because we use the normalized resistance profiles here for plotting.
