@@ -1,9 +1,17 @@
-# evolved-strain-analysis
-Computational analysis for Maeda, Iwasawa et al., 2020.
+# High-throughput laboratory evolution and evolutionary constraints in *Escherichia coli*
 
-#### supervised_pca_analysis.py
+This repository contains the codes used for the following paper:
+> **High-throughput laboratory evolution and evolutionary constraints in *Escherichia coli***  
+>Tomoya Maeda*, Junichiro Iwasawa*, Hazuki Kotani, Natsue Sakata, Masako Kawada, Takaaki Horinouchi, Aki Sakai, Kumi Tanabe, and Chikara Furusawa (*equal contribution)  
+>[preprint on bioRxiv](https://www.biorxiv.org/)
+>
+> **Abstract:** *Understanding the constraints that shape the evolution of antibiotic resistance is critical for predicting and controlling drug resistance. Despite its importance, however, a systematic investigation for evolutionary constraints is lacking. Here, we performed a high-throughput laboratory evolution of Escherichia coli under the addition of 95 antibacterial chemicals and quantified the transcriptome, resistance, and genomic profiles for the evolved strains. Using interpretable machine learning techniques, we analyzed the phenotype-genotype data and identified low dimensional phenotypic states among the evolved strains. Further analysis revealed the underlying biological processes responsible for these distinct states, leading to the identification of novel trade-off relationships associated with drug resistance. We also report a novel constraint that leads to decelerated evolution. These findings bridge the genotypic, gene expression, and drug resistance space and lead to a better understanding of evolutionary constraints for antibiotic resistance.*
+
+## supervised_pca_analysis.py
+
 `supervised_pca_analysis.py` generates a heatmap for the stress resistance profiles of the 192 evolved strains sorted based on the hierarchical clustering in the supervised PCA space. The program can be executed by
-```
+
+```console
 python supervised_pca_analysis.py
 ```
 
