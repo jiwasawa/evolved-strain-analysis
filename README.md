@@ -16,7 +16,7 @@ We have tested this code using:
 
 The full list of Python packages for the code is given in `requirements.txt`. These can be installed using:
 
-```console
+```bash
 pip install -r requirements.txt
 ```
 This might take a few minutes.
@@ -27,7 +27,7 @@ This might take a few minutes.
 
 `supervised_pca_analysis.py` generates a heatmap for the stress resistance profiles of the 192 evolved strains sorted based on the hierarchical clustering in the supervised PCA space. The program can be executed by
 
-```console
+```bash
 python supervised_pca_analysis.py
 ```
 Using the default options, the program would be executed within a few seconds.
