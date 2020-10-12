@@ -37,3 +37,6 @@ Using the default options, the program would be executed within a few seconds.
 - `create_dendrogram` performs hierarchical clustering in the supervised PCA space. If `plot_figure=True`, this function generates a figure of the dendrogram (Fig. S3 (A)).
 
 - `plot_resistance` plots the resistance profiles for all evolved strains in the order defined by hierarchical clustering. This figure corresponds to Fig. S3 (C).
+
+## License
+[MIT License](LICENSE)
