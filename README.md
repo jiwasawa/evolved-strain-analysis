@@ -1,5 +1,7 @@
 # High-throughput laboratory evolution and evolutionary constraints in *Escherichia coli*
 
+[![DOI](https://zenodo.org/badge/240467126.svg)](https://zenodo.org/badge/latestdoi/240467126)
+
 This repository contains the codes used for the following paper:
 > **High-throughput laboratory evolution and evolutionary constraints in *Escherichia coli***  
 >Tomoya Maeda*, Junichiro Iwasawa*, Hazuki Kotani, Natsue Sakata, Masako Kawada, Takaaki Horinouchi, Aki Sakai, Kumi Tanabe, and Chikara Furusawa (*equal contribution)  
